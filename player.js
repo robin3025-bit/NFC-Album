@@ -26,8 +26,32 @@ const patterns = [
 export const themes = new Map(definitions.map(([id, label, start, end, surface, ink, accent, frame, radius], i) =>
   [id, { label, vars: { bg: `linear-gradient(145deg,${start},${end})`, surface, ink, accent, frame,
     radius: `${radius}px`, on: light.has(id) ? "#fff" : "#16131c", texture: patterns[i % patterns.length] } }]));
+export async function loadThemes() {
+  const categories = new Map();
+  const response = await fetch(new URL("./themes.json", import.meta.url));
+  if (!response.ok) throw new Error("테마 목록을 불러올 수 없습니다.");
+  const catalog = await response.json();
+  for (const { id, categoryId, categoryName, name, background, baseColor, textColor, accentColor } of catalog.themes) {
+    const validColor = value => /^#[0-9a-f]{6}$/i.test(value);
+    if (themes.has(id) || !id || !categoryId || !categoryName || !name ||
+      !/^backgrounds\/[\w-]+\.(webp|svg|png|jpe?g|avif)$/i.test(background) ||
+      ![baseColor, textColor, accentColor].every(validColor)) continue;
+    const image = new URL(background, import.meta.url).href;
+    const dark = /^#[0-7]/i.test(baseColor);
+    themes.set(id, { label: name, categoryId, image, vars: {
+      bg: baseColor, texture: `linear-gradient(${baseColor}b8,${baseColor}ed)`,
+      image: `url("${image}")`, surface: baseColor, ink: textColor,
+      accent: accentColor, frame: accentColor, radius: "16px", on: dark ? "#15131a" : "#fff",
+    } });
+    if (!categories.has(categoryId)) categories.set(categoryId, { name: categoryName, ids: [] });
+    categories.get(categoryId).ids.push(id);
+  }
+  return categories;
+}
 export function applyTheme(element, id) {
   const theme = themes.get(id) ?? themes.get("dark");
+  element.style.setProperty("--image", "none");
+  element.classList.toggle("image-theme", Boolean(theme.image));
   for (const [name, value] of Object.entries(theme.vars)) element.style.setProperty("--" + name, value);
   element.dataset.theme = themes.has(id) ? id : "dark";
 }

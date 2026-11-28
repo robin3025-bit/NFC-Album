@@ -1,0 +1,115 @@
+{
+  "version": "0.2-theme-test",
+  "themes": [
+    {
+      "id": "retro-01",
+      "categoryId": "retro",
+      "categoryName": "레트로·아날로그",
+      "name": "7080 음악다방",
+      "background": "backgrounds/retro.webp",
+      "baseColor": "#23150e",
+      "textColor": "#ffe5bb",
+      "accentColor": "#ffc178",
+      "status": "generated_background"
+    },
+    {
+      "id": "sentimental-01",
+      "categoryId": "sentimental",
+      "categoryName": "감성·서정",
+      "name": "노을 편지",
+      "background": "backgrounds/sentimental.webp",
+      "baseColor": "#463246",
+      "textColor": "#fff4ee",
+      "accentColor": "#f3c3d5",
+      "status": "generated_background"
+    },
+    {
+      "id": "nature-01",
+      "categoryId": "nature",
+      "categoryName": "자연·힐링",
+      "name": "숲속 호수",
+      "background": "backgrounds/nature.webp",
+      "baseColor": "#123c2f",
+      "textColor": "#f4ffe7",
+      "accentColor": "#b5e28b",
+      "status": "generated_background"
+    },
+    {
+      "id": "future-01",
+      "categoryId": "future",
+      "categoryName": "미래·SF",
+      "name": "네온 시티",
+      "background": "backgrounds/future.webp",
+      "baseColor": "#111b48",
+      "textColor": "#e6f4ff",
+      "accentColor": "#79e4ff",
+      "status": "generated_background"
+    },
+    {
+      "id": "romance-01",
+      "categoryId": "romance",
+      "categoryName": "사랑·로맨틱",
+      "name": "장미빛 저녁",
+      "background": "backgrounds/romance.webp",
+      "baseColor": "#50202c",
+      "textColor": "#fff0ed",
+      "accentColor": "#ffb4bc",
+      "status": "generated_background"
+    },
+    {
+      "id": "minimal-01",
+      "categoryId": "minimal",
+      "categoryName": "모던·미니멀",
+      "name": "따뜻한 여백",
+      "background": "backgrounds/minimal.webp",
+      "baseColor": "#e8ded0",
+      "textColor": "#332b25",
+      "accentColor": "#795c42",
+      "status": "generated_background"
+    },
+    {
+      "id": "classic-01",
+      "categoryId": "classic",
+      "categoryName": "클래식·명품",
+      "name": "블랙 골드",
+      "background": "backgrounds/classic.svg",
+      "baseColor": "#121110",
+      "textColor": "#fff0cc",
+      "accentColor": "#d5ad63",
+      "status": "temporary_test_vector"
+    },
+    {
+      "id": "art-01",
+      "categoryId": "art",
+      "categoryName": "예술·판타지",
+      "name": "몽환적인 색채",
+      "background": "backgrounds/art.svg",
+      "baseColor": "#2b2149",
+      "textColor": "#fff5ff",
+      "accentColor": "#dfb8ff",
+      "status": "temporary_test_vector"
+    },
+    {
+      "id": "travel-01",
+      "categoryId": "travel",
+      "categoryName": "여행·추억",
+      "name": "여행 엽서",
+      "background": "backgrounds/travel.svg",
+      "baseColor": "#dfc9aa",
+      "textColor": "#3e2b1d",
+      "accentColor": "#805131",
+      "status": "temporary_test_vector"
+    },
+    {
+      "id": "season-01",
+      "categoryId": "season",
+      "categoryName": "계절·이벤트",
+      "name": "겨울 축제",
+      "background": "backgrounds/season.svg",
+      "baseColor": "#0c292c",
+      "textColor": "#fff7dd",
+      "accentColor": "#efc475",
+      "status": "temporary_test_vector"
+    }
+  ]
+}

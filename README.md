@@ -4,6 +4,10 @@
 
 이 저장소에서 `node serve.mjs`를 실행하고 `http://127.0.0.1:8765/`를 엽니다. Google 계정을 연결하기 전에도 선택한 사진과 음악을 미리보기에서 재생할 수 있습니다.
 
+## 디자인 테마 추가
+
+`backgrounds/`에 이미지를 넣고 `themes.json`의 `themes` 배열에 테마 항목을 추가합니다. 같은 `categoryId`를 사용하면 기존 카테고리에 등록되며, JSON의 항목 순서대로 대표 테마와 캐러셀 순서가 정해집니다. 저장된 앨범이 같은 테마를 찾을 수 있도록 기존 `id`를 유지합니다.
+
 ## Google Drive 연동
 
 - V0.1과 동일한 고정 OAuth 웹 클라이언트, GIS 토큰 모델, `drive.file` 권한, Drive 폴더와 멀티파트 업로드, 앨범 JSON 및 `?album=…&rk=…` URL을 사용합니다. OAuth 테스트 사용자와 허용 출처는 기존 Google Cloud 설정에서 확인합니다.

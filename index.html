@@ -22,7 +22,22 @@
 </section>
 <section><h2>음악</h2><p class="limits">파일당 20MB, 앨범에 새로 추가하는 파일은 합계 50MB까지 가능합니다.</p><label class="upload">음악 파일 추가<input type="file" id="tracks" accept="audio/*,.mp3,.m4a,.wav,.ogg,.flac,.aac" multiple></label><ul class="files" id="track-list"></ul></section>
 <section><h2>사진</h2><label class="upload">사진 파일 추가<input type="file" id="photos" accept="image/*" multiple></label><ul class="files" id="photo-list"></ul></section>
-<section><h2>디자인 테마</h2><div id="themes"></div></section>
+<section>
+<h2>디자인 테마</h2>
+<div id="themes">
+  <label for="theme-category">카테고리</label>
+  <select id="theme-category"></select>
+  <div class="theme-carousel">
+    <button type="button" id="theme-prev" aria-label="이전 테마" disabled>‹</button>
+    <figure id="theme-slide">
+      <div id="theme-art"><img id="theme-image" alt="" draggable="false" hidden></div>
+      <figcaption id="theme-caption" aria-live="polite"></figcaption>
+    </figure>
+    <button type="button" id="theme-next" aria-label="다음 테마" disabled>›</button>
+  </div>
+  <p id="theme-error" hidden>테마 목록을 불러오지 못했습니다. 현재 테마를 유지합니다.</p>
+</div>
+</section>
 <section><label class="check"><input type="checkbox" id="share"> 이 앨범의 제목, 사진, 음악을 링크가 있는 누구나 열 수 있도록 공유합니다.</label><button class="primary" id="save" type="submit">내 Google Drive에 저장</button><div class="row" id="link-row" hidden><input id="link" aria-label="감상 링크" readonly><button id="copy" type="button">복사</button></div></section>
 </form>
 <aside id="preview" hidden><p class="preview-label">모바일 실시간 미리보기</p><div id="player"></div></aside>

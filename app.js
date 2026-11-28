@@ -1,13 +1,15 @@
-import { applyTheme, mountPlayer, themes } from "./player.js";
+import { applyTheme, loadThemes, mountPlayer, themes } from "./player.js";
 import * as drive from "./drive.js";
 
 const get = id => document.getElementById(id);
 const status = message => { get("status").textContent = message; };
 const updatePlayer = mountPlayer(get("player"));
 const query = new URLSearchParams(location.search);
+const categories = await loadThemes().catch(() => new Map());
 const preview = get("preview");
 preview.hidden = false;
-const blank = () => ({ title: "", theme: "dark", tracks: [], photos: [] });
+const defaultTheme = categories.values().next().value?.ids[0] ?? "dark";
+const blank = () => ({ title: "", theme: defaultTheme, tracks: [], photos: [] });
 
 async function withSources(album, editor = false) {
   const created = [];
@@ -85,9 +87,7 @@ function setupEditor() {
   }
   function renderPreview() {
     updatePlayer(album);
-    for (const button of get("themes").children) {
-      button.setAttribute("aria-pressed", String(button.dataset.theme === album.theme));
-    }
+    renderThemePicker();
   }
   function changed() { dirty = true; renderPreview(); }
   function release(item) { if (item.src?.startsWith("blob:")) URL.revokeObjectURL(item.src); }
@@ -160,15 +160,59 @@ function setupEditor() {
       changed();
     };
   }
-  for (const [id, { label }] of themes) {
-    const button = document.createElement("button"), swatch = document.createElement("span");
-    button.type = "button"; button.className = "theme-choice"; swatch.className = "swatch";
-    swatch.setAttribute("aria-hidden", "true");
-    applyTheme(button, id);
-    button.append(swatch, label);
-    button.onclick = () => { album.theme = id; changed(); };
-    get("themes").append(button);
+  const category = get("theme-category"), slide = get("theme-slide"), image = get("theme-image");
+  const previousTheme = get("theme-prev"), nextTheme = get("theme-next");
+  const currentThemeOption = new Option("현재 테마", "");
+  currentThemeOption.disabled = true;
+  category.append(currentThemeOption);
+  for (const [id, { name }] of categories) category.append(new Option(name, id));
+  category.disabled = !categories.size;
+  get("theme-error").hidden = !!categories.size;
+
+  function renderThemePicker() {
+    const theme = themes.get(album.theme) ?? themes.get("dark");
+    const ids = categories.get(theme.categoryId)?.ids ?? [];
+    const index = ids.indexOf(album.theme);
+    currentThemeOption.textContent = `현재 테마 · ${theme.label}`;
+    currentThemeOption.hidden = index >= 0;
+    category.value = theme.categoryId ?? "";
+    applyTheme(get("theme-art"), album.theme);
+    image.hidden = !theme.image;
+    if (theme.image) {
+      if (image.src !== theme.image) image.src = theme.image;
+    } else image.removeAttribute("src");
+    get("theme-caption").textContent = index >= 0 ? `${theme.label} · ${index + 1} / ${ids.length}` : theme.label;
+    previousTheme.disabled = nextTheme.disabled = ids.length < 2;
   }
+  function selectTheme(id) {
+    if (!id || id === album.theme) return;
+    album.theme = id;
+    dirty = true;
+    applyTheme(get("player"), id);
+    renderThemePicker();
+  }
+  function moveTheme(step) {
+    const ids = categories.get(category.value)?.ids ?? [];
+    if (ids.length < 2) return;
+    const index = ids.indexOf(album.theme);
+    selectTheme(ids[(index + step + ids.length) % ids.length]);
+  }
+  category.onchange = () => selectTheme(categories.get(category.value)?.ids[0]);
+  previousTheme.onclick = () => moveTheme(-1);
+  nextTheme.onclick = () => moveTheme(1);
+  let start;
+  slide.onpointerdown = event => {
+    if (event.pointerType !== "touch" || !event.isPrimary || nextTheme.disabled) return;
+    start = { id: event.pointerId, x: event.clientX, y: event.clientY };
+    slide.setPointerCapture(event.pointerId);
+  };
+  slide.onpointercancel = event => { if (start?.id === event.pointerId) start = undefined; };
+  slide.onpointerup = event => {
+    if (start?.id !== event.pointerId) return;
+    const dx = event.clientX - start.x, dy = event.clientY - start.y;
+    start = undefined;
+    if (Math.abs(dx) >= 42 && Math.abs(dx) > Math.abs(dy) * 1.3) moveTheme(dx < 0 ? 1 : -1);
+  };
   get("title").oninput = event => { album.title = event.target.value; changed(); };
   function controls(locked) {
     busy = locked;
